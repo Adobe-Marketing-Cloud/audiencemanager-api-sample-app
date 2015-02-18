@@ -206,6 +206,29 @@ public class Application extends Controller {
                                 Logger.info(String.format(
                                         "Created trait %s for blog post %d",
                                         responseJson, blogPost.id));
+                                
+                                // Exercise 6 Create segment
+                                int createdTraitSid = responseJson.get("sid")
+                                        .asInt();
+                                // Test Segment for industry exists by using
+                                // integration code of "industry-<industryId>".
+                                Response segmentGetResponse = audienceManagerWS(
+                                        "segments/ic:industry-"
+                                                + blogPost.author.industry.id)
+                                        .get().get();
+                                if (segmentGetResponse.getStatus() == NOT_FOUND) {
+                                    // Segment doesn't exist yet, create new
+                                    // segment.
+                                    Logger.info("Segment does not exist for industry, will be created");
+                                    createSegment(blogPost, datasource,
+                                            createdTraitSid);
+                                } else if (segmentGetResponse.getStatus() == OK) {
+                                    // Segment exists. Update
+                                    updateSegment(blogPost, createdTraitSid,
+                                            segmentGetResponse);
+                                }
+                                Logger.info(segmentGetResponse.getStatus()
+                                        + segmentGetResponse.getBody());
                             } else {
                                 Logger.error(String
                                         .format("Eror creating trait for blog post %s:\n %d\n %s",
@@ -441,5 +464,85 @@ public class Application extends Controller {
                     }
                 });
     }
+    
+    /**
+     * Creates a segment off a blog post based on the author's industry
+     * Added as part of Exercise 6.
+     * @param blogPost
+     *            The blog post
+     * @param datasource
+     *            The data source
+     * @param createdTraitSid
+     *            The id of the newly created trait to use in the segment.
+     */
+    private static void createSegment(BlogPost blogPost, int datasource,
+            int createdTraitSid) {
+        ObjectNode segmentJson = Json.newObject();
+        segmentJson.put("integrationCode", "industry-"
+                + blogPost.author.industry.id);
+        // Segments can belong to the the root folder.
+        segmentJson.put("folderId", 0);
+        segmentJson.put("name", "Industry " + blogPost.author.industry.label);
+        segmentJson.put("dataSourceId", datasource);
+        segmentJson.put("segmentRule", createdTraitSid + "T");
+        audienceManagerWS("segments/").post(segmentJson).onRedeem(
+                new Callback<Response>() {
+                    @Override
+                    public void invoke(Response response) throws Throwable {
+                        if (response.getStatus() == CREATED) {
+                            JsonNode createdSegment = response.asJson();
+                            Logger.info(String.format(
+                                    "Created segment for industry:\n%s",
+                                    createdSegment));
+                        } else {
+                            Logger.info(String
+                                    .format("Could not create segment for industry. Received status %d and response %s",
+                                            response.getStatus(),
+                                            response.getBody()));
+                        }
+                    }
+                });
+    }
+    
+    /**
+     * Updates the segment for an industry to include the newly created trait. 
+     * Added as part of Exercise 6.
+     * @param blogPost
+     *            The blog post
+     * @param createdTraitSid
+     *            The id of the newly created trait to use in the segment.
+     * @param segmentGetResponse
+     *            The response for the existing segment.
+     */
+    private static void updateSegment(BlogPost blogPost, int createdTraitSid,
+            Response segmentGetResponse) {
+        ObjectNode segmentJson = (ObjectNode) segmentGetResponse.asJson();
+        String existingRule = segmentJson.get("segmentRule").asText();
 
+        String newRule = existingRule + " OR " + createdTraitSid + "T";
+        segmentJson.put("segmentRule", newRule);
+        // Extra Credit is the IF Match header. This tells
+        // the APIs to only allow the put to happen if the
+        // etag matches the current version
+        // This means no one else ahs modified the segment
+        // since you last got it.
+        audienceManagerWS("segments/ic:industry-" + blogPost.author.industry.id)
+                .setHeader(IF_MATCH, segmentGetResponse.getHeader(ETAG))
+                .put(segmentJson).onRedeem(new Callback<Response>() {
+
+                    @Override
+                    public void invoke(Response response) throws Throwable {
+                        if (response.getStatus() == OK) {
+                            Logger.info(String.format(
+                                    "Updated segment for industry:\n%s",
+                                    response.asJson()));
+                        } else {
+                            Logger.info(String
+                                    .format("Could not update segment for industry. Received status %d and response %s",
+                                            response.getStatus(),
+                                            response.getBody()));
+                        }
+                    }
+                });
+    }
 }
