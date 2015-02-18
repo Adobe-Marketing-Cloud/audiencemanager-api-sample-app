@@ -186,7 +186,56 @@ public class Application extends Controller {
             blogPost.published = new Date();
             blogPost.author = getLoggedInUser();
             BlogPost.create(blogPost);
+           
+            // Exercise 3
+            int datasource = Play.application().configuration()
+                    .getInt("audienceManager.datasource");
+            int blogPostTraitFolderId = Play.application().configuration()
+                    .getInt("audienceManager.postReaderTraitFolder");
+            int commentTraitFolderId = Play.application().configuration()
+                    .getInt("audienceManager.postCommenterTraitFolder");
 
+            createTrait("Read " + blogPost.title, "post-" + blogPost.id,
+                    datasource, blogPostTraitFolderId,
+                    "blogPostId==" + blogPost.id).onRedeem(
+                    new Callback<Response>() {
+                        @Override
+                        public void invoke(Response response) throws Throwable {
+                            if (response.getStatus() == CREATED) {
+                                JsonNode responseJson = response.asJson();
+                                Logger.info(String.format(
+                                        "Created trait %s for blog post %d",
+                                        responseJson, blogPost.id));
+                            } else {
+                                Logger.error(String
+                                        .format("Eror creating trait for blog post %s:\n %d\n %s",
+                                                blogPost, response.getStatus(),
+                                                response.getBody()));
+                            }
+                        }
+                    });
+
+            createTrait("Commented on " + blogPost.title,
+                    "commenter-post-" + blogPost.id, datasource,
+                    commentTraitFolderId,
+                    "comment==1 AND blogPostId==" + blogPost.id).onRedeem(
+                    new Callback<Response>() {
+
+                        @Override
+                        public void invoke(Response response) throws Throwable {
+                            if (response.getStatus() == CREATED) {
+                                JsonNode responseJson = response.asJson();
+                                Logger.info(String
+                                        .format("Created trait %s for comment on blog post %d",
+                                                responseJson, blogPost.id));
+                            } else {
+                                Logger.error(String
+                                        .format("Eror creating trait for comment on blog post %s:\n %d\n %s",
+                                                blogPost, response.getStatus(),
+                                                response.getBody()));
+                            }
+                        }
+                    });
             return redirect(routes.Application.getPost(blogPost.id));
         }
     }
@@ -274,5 +323,39 @@ public class Application extends Controller {
         }
 
         return audienceManagerWSRH;
+    }
+    
+    /**
+     * Creates a trait in AudienceManager. Added as part of Exercise 3.
+     * 
+     * @param name
+     *            The name of the trait.
+     * @param integrationCode
+     *            The integration code of the trait.
+     * @param datasourceId
+     *            The data source for the trait
+     * @param folderId
+     *            The folder the trait will contain the trait.
+     * @param traitRule
+     *            The trait rule.
+     * @return
+     */
+    private static Promise<Response> createTrait(String name,
+            String integrationCode, int datasourceId, int folderId,
+            String traitRule) {
+
+        ObjectNode trait = Json.newObject();
+        trait.put("name", name);
+        // Using an integration makes accessing the corresponding blog post
+        // trait in AudienceManager easy. We don't need to keep track of the id
+        // in audience manager and can use our own ids
+        // for finding the trait.
+        trait.put("integrationCode", integrationCode);
+        trait.put("dataSourceId", datasourceId);
+        trait.put("folderId", folderId);
+        trait.put("traitType", "RULE_BASED_TRAIT");
+        trait.put("traitRule", traitRule);
+
+        return audienceManagerWS("traits/").post(trait);
     }
 }
