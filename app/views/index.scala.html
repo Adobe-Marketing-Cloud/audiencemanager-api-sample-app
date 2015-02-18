@@ -1,0 +1,27 @@
+@(posts: List[BlogPost])
+
+@import helper._
+
+@main("Blog Posts") { 
+        @if(!posts.isEmpty()){
+	        @defining(posts.get(0)){ post =>
+	         <div class="hero-unit">
+	           <h1>@post.title</h1>
+	            <h2>@post.author.name</h2>
+	            <p>@post.content.take(255)...</p>
+	            <p><a href="@routes.Application.getPost(post.id)" class="btn btn-primary btn-large">Keep Reading &raquo;</a></p>
+	         </div>
+	         }
+	        
+	        <div class="row">
+	        @for(post <- posts.tail) {
+	            <div class="span4">
+	                 <h2>@post.title</h2>
+	                 <h3>@post.author.name</h3>
+	                 <p>@post.content.take(128)...</p>
+	                <p><a class="btn" href="@routes.Application.getPost(post.id)">Read &raquo;</a></p>
+	            </div>
+	        }
+	        </div>
+        }
+}

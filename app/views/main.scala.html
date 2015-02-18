@@ -1,0 +1,43 @@
+@(title: String)(content: Html)
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>@title</title>
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
+        <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("stylesheets/bootstrap.min.css")"> 
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
+        <script src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")" type="text/javascript"></script>
+        <script src="@routes.Assets.at("javascripts/bootstrap.min.js")" type="text/javascript"></script>
+        
+    </head>
+    <body>
+    @Application.header
+
+    
+    <div class="container">
+    <!-- TODO remove these br and fix css -->
+	    <br/>
+	    <br/>
+	    <br/>
+	    @if(flash.contains("success")) {
+            <div class="alert alert-success">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+             @flash.get("success")
+            </div>
+        }
+        @if(flash.contains("error")) {
+            <div class="alert alert-error">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+             @flash.get("error")
+            </div>
+        }
+        @content
+    </div>
+      <hr/>
+      <footer>
+        <p>&copy; Adobe 2015</p>
+      </footer>
+    </body>
+</html>

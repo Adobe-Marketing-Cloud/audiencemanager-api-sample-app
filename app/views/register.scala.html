@@ -1,0 +1,35 @@
+@(userForm: Form[User])
+
+@import helper._
+@implicitFieldConstructor = @{ FieldConstructor(twitterBootstrapInput.render) } 
+
+@main("Create a Post") {
+    
+    <h2>Register</h2>
+    
+    
+    @form(routes.Application.createUser()) {
+        
+        @inputText(userForm("name")) 
+        @inputText(userForm("email")) 
+        @inputPassword(userForm("password"))
+        
+        @select(
+         userForm("companySize.id"), 
+         options(CompanySize.options), 
+         '_label -> "Company Size", '_default -> "-- Choose a company --",
+         '_showConstraints -> false
+         )
+        
+         @select(
+         userForm("industry.id"), 
+         options(Industry.options), 
+         '_label -> "Industry", '_default -> "-- Choose an industry --",
+         '_showConstraints -> false
+         )
+        
+        <input type="submit" value="Create">
+        
+    }
+    
+}

@@ -1,0 +1,18 @@
+@(postForm: Form[BlogPost], postTagForm: Form[Application.TagContainer])
+
+@import helper._
+@implicitFieldConstructor = @{ FieldConstructor(twitterBootstrapInput.render) } 
+
+@main("Create a Post") {
+    
+    <h2>Create a new post</h2>
+    
+    @form(routes.Application.newPost()) {
+        @inputText(postForm("Title")) 
+        @textarea(postForm("Content"), args = 'rows -> 10, 'cols -> 80) 
+        @inputText(postTagForm("CommaSeparatedTags")) 
+        
+        <input type="submit" value="Create">
+    }
+    
+}

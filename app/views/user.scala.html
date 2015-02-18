@@ -1,0 +1,26 @@
+@(user: User, posts: List[BlogPost])
+
+@import helper._
+
+@main(user.name) {
+
+        
+         <div class="hero-unit">
+           <h1>@user.name</h1>
+            <h2>Email: @user.email</h2>
+            <h2>Industry: @user.industry.label</h2>
+            <h2>Company Size: @user.companySize.label</h2>
+         </div>
+         
+        
+        <div class="row">
+        @for(post <- posts) {
+            <div class="span4">
+                 <h2>@post.title</h2>
+                 <h3>@post.author.name</h3>
+                 <p>@post.content.take(128)...</p>
+                <p><a class="btn" href="@routes.Application.getPost(post.id)">Read &raquo;</a></p>
+            </div>
+        }
+        </div>
+}

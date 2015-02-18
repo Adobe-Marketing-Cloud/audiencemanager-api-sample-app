@@ -1,0 +1,51 @@
+@(user: User, tags: List[Tag], authors: List[User], audienceManagerUser : String)
+        <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="#">Blog</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li class="active"><a href="@routes.Application.index()">Home</a></li>
+              @if(user != null){
+                  <li><a href="@routes.Application.authorPost()">Create Post</a></li>
+              }
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tags <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                   @for(tag <- tags) {
+                    <li><a href="@routes.Application.posts(play.libs.F.Option.Some(tag.label))">@tag.label</a></li>
+                  }
+                </ul>
+              </li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Authors <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                   @for(author <- authors) {
+                    <li><a href="@routes.Application.user(author.email)">@author.name</a></li>
+                  }
+                </ul>
+              </li>
+            </ul>
+            <p class="navbar-text pull-right">
+                @if(user == null){
+                   <a class="navbar-link" href="@routes.Application.logout()">Login</a> | <a class="navbar-link" href="@routes.Application.register">Register</a>
+                  } else {
+                       @if(audienceManagerUser == null){
+                           <a class="navbar-link" href="@routes.OAuth2AudienceManager.login()">Link with AudienceManager</a> | 
+                       } else {
+                         Linked as @audienceManagerUser | 
+                       }
+                       <a class="navbar-link" href="@routes.Application.user(user.email)">@user.name (@user.email)</a> | <a class="navbar-link" href="@routes.Application.logout()">Logout</a>
+                  }
+              </p>
+              
+            </form>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>

@@ -1,0 +1,39 @@
+@(post: BlogPost, comments: List[Comment], commentForm: Form[Comment], user: User)
+
+@import helper._
+@implicitFieldConstructor = @{ FieldConstructor(twitterBootstrapInput.render) } 
+
+@main("Viewing Post") {
+    
+    <h1>@post.title</h1>
+    <h2>by @post.author.name - on @post.published.format("MMM dd yyyy") at @post.published.format("HH:mm") </h2>
+    
+    <p>@post.content</p>
+    
+    
+    <p>Tags: @for(tag <- post.tags) {
+        <a href="@routes.Application.posts(play.libs.F.Option.Some(tag.label))">@tag.label</a> 
+    }
+    </p>
+    
+    <h3>Comments: @comments.size()</h3>
+        @for(comment <- comments) {
+            <div>
+                <h4>@comment.title</h4>
+                <h5>@comment.author.name - @comment.published.format("MMM dd yyyy HH:mm")</h5>
+                <p>@comment.content</p>
+            </div>
+            <br/>
+        }
+    
+	<h3>Chime In:</h3>
+	    @if(user == null){
+	    	You must login first.
+	    } else {
+		    @form(routes.Application.newComment(post.id)) {
+		        @inputText(commentForm("Title")) 
+	    	    @textarea(commentForm("Content"), args = 'rows -> 5, 'cols -> 80) 
+		        <input type="submit" value="Create">
+		    }
+	    }
+}

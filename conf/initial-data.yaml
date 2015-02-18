@@ -1,0 +1,154 @@
+# Tags
+- &introTag !!models.Tag
+    label: AuthorIntroduction
+- &industryRecap !!models.Tag
+    label: IndustryRecap
+- &industryForecast !!models.Tag
+    label: IndustryForecast
+- &disruptive !!models.Tag
+    label: DisruptiveInnovation
+- &seachange !!models.Tag
+    label: SeaChange
+- &synergy !!models.Tag
+    label: Synergy
+- &shift !!models.Tag
+    label: ParadigmShift
+# Company Size
+- &smallCompany !!models.CompanySize
+    label:      Small (1-50)
+
+- &mediumCompany !!models.CompanySize
+    label:      Medium (50-500)
+
+- &largeCompany !!models.CompanySize
+    label:      Large (500+)
+
+#Industries (from Bureau of Labor Statistics)
+- &construction !!models.Industry
+    label:      Construction
+
+- &education !!models.Industry
+    label:      Education and Health Services
+
+- &finance !!models.Industry
+    label:      Financial Activities
+
+- !!models.Industry
+    label:      Information
+
+- !!models.Industry
+    label:      Leisure and Hospitality
+
+- &manufacturing !!models.Industry
+    label:      Manufacturing
+
+- !!models.Industry
+    label:      Natural Resources and Mining
+
+- !!models.Industry
+    label:      Other Services (Except Public Administration)
+
+- !!models.Industry
+    label:      Professional and Business Services
+
+- !!models.Industry
+    label:      Trade, Transportation, and Utilities
+
+
+# Users
+- &bob !!models.User
+    email:      bob@example.com
+    name:       Bob
+    password:   secret
+    companySize: *smallCompany
+    industry:   *education
+
+- &jane !!models.User
+    email:      jane@example.com
+    name:       Jane
+    password:   secret
+    companySize: *mediumCompany
+    industry:    *construction
+
+- &jeff !!models.User
+    email:      jeff@example.com
+    name:       Jeff
+    password:   secret
+    companySize: *mediumCompany
+    industry:    *finance
+
+# Blog Posts
+
+- &first !!models.BlogPost
+    title:      First!
+    content:    |
+      Welcome to Audience Manager Hands On Lab
+
+      Proin ut nibh elit. Morbi vel condimentum augue, a volutpat enim. Phasellus at leo sem. Quisque et sapien tincidunt tellus euismod blandit. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque euismod vestibulum dui vitae tincidunt. Etiam nec tellus cursus, malesuada orci sed, laoreet ante. Curabitur molestie lectus ut felis aliquam hendrerit ac non lorem. Nulla rhoncus id metus non aliquam.
+
+      Fusce commodo felis sed sapien pharetra mollis. Sed mollis orci semper, malesuada urna et, fermentum libero. Praesent facilisis nec erat a consectetur. Praesent gravida lectus sit amet lobortis bibendum. Praesent ut lacinia purus, vel venenatis sem. Donec et lobortis elit. Nunc gravida ex sit amet lorem blandit vulputate non vel ligula. Morbi eget enim vel mauris varius tempor a venenatis diam.
+
+      Mauris efficitur, tellus sit amet interdum tempus, nulla ipsum sagittis nisi, et consequat turpis erat ut enim. Cras ac justo ex. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nulla suscipit eros a pellentesque vulputate. Etiam a risus in lectus rutrum tristique sit amet quis metus. Nulla et elementum purus. Etiam aliquet odio quis urna fringilla tristique. Curabitur eu tellus id est facilisis tincidunt. Nulla venenatis porta magna vel mollis. Sed et est a enim lacinia eleifend. In pulvinar nulla at risus hendrerit pellentesque. Suspendisse laoreet porttitor posuere. Nam egestas nulla interdum, venenatis mauris vel, mattis ligula. Donec sit amet dui justo. Nullam a dui quis ex porta consectetur a sit amet eros. Mauris pharetra blandit lacus, id eleifend massa interdum accumsan.
+    author:     *bob
+    published:   2015-01-01
+    tags:
+        - *introTag
+        - *industryRecap
+
+- &second !!models.BlogPost
+    title:      Just a second...
+    content:    |
+      DMP Business is booming.
+
+      Morbi laoreet sem ut nunc hendrerit, vitae egestas purus tristique. Aenean in dolor lorem. Suspendisse augue orci, lobortis sed vehicula a, ullamcorper non diam. Aliquam laoreet massa nunc. Donec imperdiet congue pretium. Fusce sit amet aliquam est, a auctor libero. Mauris fermentum dui eu elit ultrices, in ultrices mi fringilla. Nam vehicula nulla in massa condimentum venenatis.
+
+      Mauris mi neque, tincidunt non imperdiet et, sodales vel ex. Morbi quis enim malesuada, faucibus arcu a, mollis mi. Integer tincidunt consequat ex, vitae ornare metus dignissim eu. Praesent lectus justo, ultricies ut sagittis eu, suscipit et nisl. Ut vel enim arcu. Proin gravida sem augue, vitae faucibus tellus dapibus rhoncus. Vestibulum ac sagittis lorem, in auctor tellus.
+
+      Sed hendrerit euismod tortor quis eleifend. Aliquam erat volutpat. Proin tincidunt condimentum ante, quis euismod libero euismod consectetur. Morbi id posuere ligula, vel pretium lorem. Phasellus euismod egestas finibus. Nullam nisi nulla, dapibus ut nisi quis, blandit mattis orci. Donec sodales orci ut tellus consequat mollis. Proin sed diam posuere, vulputate dolor ut, tempor erat.
+    author:     *jane
+    published:   2015-01-02
+    tags:
+        - *introTag
+        - *industryForecast
+
+- &third !!models.BlogPost
+    title:      New Developments
+    content:    |
+      Morbi laoreet sem ut nunc hendrerit, vitae egestas purus tristique. Aenean in dolor lorem. Suspendisse augue orci, lobortis sed vehicula a, ullamcorper non diam. Aliquam laoreet massa nunc. Donec imperdiet congue pretium. Fusce sit amet aliquam est, a auctor libero. Mauris fermentum dui eu elit ultrices, in ultrices mi fringilla. Nam vehicula nulla in massa condimentum venenatis.
+
+      Mauris mi neque, tincidunt non imperdiet et, sodales vel ex. Morbi quis enim malesuada, faucibus arcu a, mollis mi. Integer tincidunt consequat ex, vitae ornare metus dignissim eu. Praesent lectus justo, ultricies ut sagittis eu, suscipit et nisl. Ut vel enim arcu. Proin gravida sem augue, vitae faucibus tellus dapibus rhoncus. Vestibulum ac sagittis lorem, in auctor tellus.
+
+      Sed hendrerit euismod tortor quis eleifend. Aliquam erat volutpat. Proin tincidunt condimentum ante, quis euismod libero euismod consectetur. Morbi id posuere ligula, vel pretium lorem. Phasellus euismod egestas finibus. Nullam nisi nulla, dapibus ut nisi quis, blandit mattis orci. Donec sodales orci ut tellus consequat mollis. Proin sed diam posuere, vulputate dolor ut, tempor erat.
+    author:     *jane
+    published:   2015-02-12
+    tags:
+        - *seachange
+        - *shift
+
+- &four !!models.BlogPost
+    title:      Hello, bloggosphere.
+    content:    |
+      Morbi laoreet sem ut nunc hendrerit, vitae egestas purus tristique. Aenean in dolor lorem. Suspendisse augue orci, lobortis sed vehicula a, ullamcorper non diam. Aliquam laoreet massa nunc. Donec imperdiet congue pretium. Fusce sit amet aliquam est, a auctor libero. Mauris fermentum dui eu elit ultrices, in ultrices mi fringilla. Nam vehicula nulla in massa condimentum venenatis.
+
+      Mauris mi neque, tincidunt non imperdiet et, sodales vel ex. Morbi quis enim malesuada, faucibus arcu a, mollis mi. Integer tincidunt consequat ex, vitae ornare metus dignissim eu. Praesent lectus justo, ultricies ut sagittis eu, suscipit et nisl. Ut vel enim arcu. Proin gravida sem augue, vitae faucibus tellus dapibus rhoncus. Vestibulum ac sagittis lorem, in auctor tellus.
+
+      Sed hendrerit euismod tortor quis eleifend. Aliquam erat volutpat. Proin tincidunt condimentum ante, quis euismod libero euismod consectetur. Morbi id posuere ligula, vel pretium lorem. Phasellus euismod egestas finibus. Nullam nisi nulla, dapibus ut nisi quis, blandit mattis orci. Donec sodales orci ut tellus consequat mollis. Proin sed diam posuere, vulputate dolor ut, tempor erat.
+    author:     *jeff
+    published:   2015-02-12
+    tags:
+        - *introTag
+        - *synergy
+
+- &five !!models.BlogPost
+    title:     New Movement
+    content:    |
+      Morbi laoreet sem ut nunc hendrerit, vitae egestas purus tristique. Aenean in dolor lorem. Suspendisse augue orci, lobortis sed vehicula a, ullamcorper non diam. Aliquam laoreet massa nunc. Donec imperdiet congue pretium. Fusce sit amet aliquam est, a auctor libero. Mauris fermentum dui eu elit ultrices, in ultrices mi fringilla. Nam vehicula nulla in massa condimentum venenatis.
+
+      Mauris mi neque, tincidunt non imperdiet et, sodales vel ex. Morbi quis enim malesuada, faucibus arcu a, mollis mi. Integer tincidunt consequat ex, vitae ornare metus dignissim eu. Praesent lectus justo, ultricies ut sagittis eu, suscipit et nisl. Ut vel enim arcu. Proin gravida sem augue, vitae faucibus tellus dapibus rhoncus. Vestibulum ac sagittis lorem, in auctor tellus.
+
+      Sed hendrerit euismod tortor quis eleifend. Aliquam erat volutpat. Proin tincidunt condimentum ante, quis euismod libero euismod consectetur. Morbi id posuere ligula, vel pretium lorem. Phasellus euismod egestas finibus. Nullam nisi nulla, dapibus ut nisi quis, blandit mattis orci. Donec sodales orci ut tellus consequat mollis. Proin sed diam posuere, vulputate dolor ut, tempor erat.
+    author:     *bob
+    published:   2015-02-13
+    tags:
+        - *shift
+        - *synergy
