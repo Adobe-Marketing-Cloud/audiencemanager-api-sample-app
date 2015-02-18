@@ -236,6 +236,10 @@ public class Application extends Controller {
                             }
                         }
                     });
+            
+            // Exercise 5 Derived Signals
+            createDerivedSignal(blogPost);
+            
             return redirect(routes.Application.getPost(blogPost.id));
         }
     }
@@ -404,4 +408,38 @@ public class Application extends Controller {
                     }
                 });
     }
+    
+    /**
+     * Creates a derived signal that expands a blog post id into the author's
+     * email address. Added as part of Exercise 5.
+     * 
+     * @param blogPost
+     *            The blog post
+     */
+    private static void createDerivedSignal(BlogPost blogPost) {
+        ObjectNode derivedSignal = Json.newObject();
+        derivedSignal.put("sourceKey", "blogPostId");
+        derivedSignal.put("sourceValue", blogPost.id);
+        derivedSignal.put("targetKey", "author");
+        derivedSignal.put("targetValue", blogPost.author.email);
+
+        audienceManagerWS("signals/derived/").post(derivedSignal).onRedeem(
+                new Callback<Response>() {
+                    @Override
+                    public void invoke(Response response) throws Throwable {
+                        if (response.getStatus() == CREATED) {
+                            JsonNode responseJson = response.asJson();
+                            Logger.info(String.format(
+                                    "Created derivedSignal %s for post %s",
+                                    responseJson, blogPost.title));
+                        } else {
+                            Logger.error(String
+                                    .format("Eror creating derivedSignal for tag: %d\n %s",
+                                            response.getStatus(),
+                                            response.getBody()));
+                        }
+                    }
+                });
+    }
+
 }
