@@ -494,6 +494,9 @@ public class Application extends Controller {
                             Logger.info(String.format(
                                     "Created segment for industry:\n%s",
                                     createdSegment));
+                            
+                            // Exercise 7
+                            createDestinationMapping(createdSegment);
                         } else {
                             Logger.info(String
                                     .format("Could not create segment for industry. Received status %d and response %s",
@@ -544,5 +547,42 @@ public class Application extends Controller {
                         }
                     }
                 });
+    }
+    
+    /**
+     * Creates a destination mapping for the segment to the appropriate industry.
+     * Added as part of Exercise 7.
+     * @param segmentJson
+     *            The segment
+     */
+    private static void createDestinationMapping(JsonNode segmentJson) {
+        int destinationId = Play.application().configuration()
+                .getInt("audienceManager.industryDestination");
+        ObjectNode destinationMappingJson = Json.newObject();
+        destinationMappingJson.put("sid", segmentJson.get("sid").asInt());
+        destinationMappingJson.put("traitType", "SEGMENT");
+        destinationMappingJson.put("startDate", System.currentTimeMillis());
+
+        // There is a bug in the APIs that require trait alias not be null, so
+        // need to send this.
+        destinationMappingJson.put("traitAlias",
+                segmentJson.get("integrationCode").asText());
+
+        audienceManagerWS("destinations/" + destinationId + "/mappings/").post(
+                destinationMappingJson).onRedeem(new Callback<Response>() {
+
+            @Override
+            public void invoke(Response response) throws Throwable {
+                if (response.getStatus() == CREATED) {
+                    Logger.info(String.format(
+                            "Created mapping for industry segment:\n%s",
+                            response.asJson()));
+                } else {
+                    Logger.info(String
+                            .format("Could not create mapping for industry segment. Received status %d and response %s",
+                                    response.getStatus(), response.getBody()));
+                }
+            }
+        });
     }
 }
