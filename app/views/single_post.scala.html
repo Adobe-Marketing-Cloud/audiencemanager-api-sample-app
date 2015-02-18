@@ -1,4 +1,4 @@
-@(post: BlogPost, comments: List[Comment], commentForm: Form[Comment], user: User)
+@(post: BlogPost, comments: List[Comment], commentForm: Form[Comment], user: User, lastMonthUniques: Long)
 
 @import helper._
 @implicitFieldConstructor = @{ FieldConstructor(twitterBootstrapInput.render) } 
@@ -15,6 +15,9 @@
         <a href="@routes.Application.posts(play.libs.F.Option.Some(tag.label))">@tag.label</a> 
     }
     </p>
+    
+    <!--  Exercise 8 -->
+    <p>Last 30 Day Unique Views: @lastMonthUniques</p>
     
     <h3>Comments: @comments.size()</h3>
         @for(comment <- comments) {

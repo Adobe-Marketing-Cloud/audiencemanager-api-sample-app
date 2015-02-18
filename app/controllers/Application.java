@@ -131,9 +131,10 @@ public class Application extends Controller {
         if (post == null) {
             return notFound();
         }
-
+        
+        // Exercise 8 (added get30DayUniques(post))
         return ok(views.html.single_post.render(BlogPost.find.byId(id),
-                Comment.all(), commentForm, getLoggedInUser()));
+                Comment.all(), commentForm, getLoggedInUser(), get30DayUniques(post)));
     }
 
     /**
@@ -274,9 +275,10 @@ public class Application extends Controller {
         BlogPost post = BlogPost.find.byId(id);
 
         if (filledForm.hasErrors()) {
+            // Exercise 8 (added get30DayUniques(post))
             return badRequest(views.html.single_post.render(
                     BlogPost.find.byId(id), Comment.all(), filledForm,
-                    getLoggedInUser()));
+                    getLoggedInUser(), get30DayUniques(post)));
         } else {
             Comment toCreate = filledForm.get();
             toCreate.blogPost = post;
@@ -584,5 +586,28 @@ public class Application extends Controller {
                 }
             }
         });
+    }
+    
+    /**
+     * Gets the 30 day unique visitors for the blog post.
+     * Added as part of Exercise 8.
+     * 
+     * @param post
+     * @return The 30 day unique visitors, or null if there is no trait created
+     *         for the post.
+     */
+    private static Long get30DayUniques(BlogPost post) {
+        Long lastMonthUniques = null;
+        Response traitResponse = audienceManagerWS("traits/ic:post-" + post.id)
+                .setQueryParameter("includeMetrics", "true").get().get();
+        if (traitResponse.getStatus() == OK) {
+            JsonNode traitJson = traitResponse.asJson();
+            lastMonthUniques = traitJson.get("uniques30Day").asLong();
+            Logger.info("found metrics for trait: " + traitJson);
+        } else {
+            Logger.info("Could not get metrics, no corresponding trait for post "
+                    + post.id);
+        }
+        return lastMonthUniques;
     }
 }
