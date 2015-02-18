@@ -277,6 +277,9 @@ public class Application extends Controller {
                 tag.creator = getLoggedInUser();
                 tag.label = tagString;
                 Tag.create(tag);
+                
+                // Exercise 4
+                createTraitForTag(tagString);
             }
             tags.add(tag);
         }
@@ -357,5 +360,48 @@ public class Application extends Controller {
         trait.put("traitRule", traitRule);
 
         return audienceManagerWS("traits/").post(trait);
+    }
+    
+    /**
+     * Creates a trait for a tag. Added as part of Exercise 4.
+     * 
+     * @param tagString
+     *            The tag
+     */
+    private static void createTraitForTag(final String tagString) {
+        int datasource = Play.application().configuration()
+                .getInt("audienceManager.datasource");
+        int tagTraitFolderId = Play.application().configuration()
+                .getInt("audienceManager.tagTraitFolder");
+
+        ObjectNode trait = Json.newObject();
+        trait.put("name", "Read Post Tagged as " + tagString);
+        // Using an integration makes accessing the corresponding blog post
+        // trait in AudienceManager easy. We don't need to keep track of the id
+        // in audience manager and can use our own ids
+        // for finding the trait.
+        trait.put("integrationCode", "tag-" + tagString);
+        trait.put("dataSourceId", datasource);
+        trait.put("folderId", tagTraitFolderId);
+        trait.put("traitType", "RULE_BASED_TRAIT");
+        trait.put("traitRule", "tag==\"" + tagString + "\"");
+
+        audienceManagerWS("traits").post(trait).onRedeem(
+                new Callback<Response>() {
+                    @Override
+                    public void invoke(Response response) throws Throwable {
+                        if (response.getStatus() == CREATED) {
+                            AudienceManagerAuthentication aamAuth = new AudienceManagerAuthentication();
+                            JsonNode responseJson = response.asJson();
+                            Logger.info(String.format(
+                                    "Created trait %s for tag %s",
+                                    responseJson, tagString));
+                        } else {
+                            Logger.error(String.format(
+                                    "Eror creating trait for tag: %d\n %s",
+                                    response.getStatus(), response.getBody()));
+                        }
+                    }
+                });
     }
 }
