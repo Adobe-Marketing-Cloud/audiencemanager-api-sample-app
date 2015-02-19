@@ -8,7 +8,7 @@ If you have homebrew installed, you can install play by running `brew install pl
 
 
 ## AudienceManager Background
-Adobe AudienceManager is a Data Management Platform (DMP). It allows you to combine into audiences information on your visitors from disparate sources such as from your site, your CRM systems, and third party relationships. You are able to make these audiences actionable by sending this information to wherever you chose, whether it's your own systems for site customization or to ad networks for ad targeting. 
+Adobe AudienceManager is a Data Management Platform (DMP). It allows you to combine into audiences information on your visitors from disparate sources such as from your site, your CRM systems, and third party relationships. You are able to make these audiences actionable by sending this information to wherever you choose, whether it's your own systems for site customization or to ad networks for ad targeting. 
 
 
 ## Getting started
