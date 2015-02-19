@@ -110,7 +110,7 @@ Make sure your blog user is linked with AudienceManager (via the link in the nav
 
 1. Create a trait each time a blog post is created to represent a visitor who has read the blog post
   1. The trait rule should be `blogPostId==<blogPostId>`.
-  2. Put this trait the Blog Post Reader folder from Exercise 2.
+  2. Put this trait in the Blog Post Reader folder from Exercise 2.
   3. Set the data source to the data source you created in Exercise 2.
   4. Set the integration code to `post-<blogPostId>`.
   5. Trait type should be `RULE_BASED_TRAIT`.
