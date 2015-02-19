@@ -14,6 +14,9 @@ Adobe AudienceManager is a Data Management Platform (DMP). It allows you to comb
 ## Getting started
 To start the application, in a terminal in the current directory, run `play`, or `play debug` if you wish to connect a debugger. This will start up the play framework's console. From here you can use the commands `clean` and `compile` to build the application. You can also just type `run` to start the application. The files will be compiled the first time you load the application in a browser at http://localhost:9000. The database will also be created the first time you launch the application (you will be asked to to create the database tables by clicking a button on a webpage). To close the application and return to the play console, press `CTRL D`.
 
+### Gotchas
+You may see an error `Oops, cannot start the server. @6l8nkm92d: Database 'default' needs evolution!` when trying to run the application. If you encounter this, simply put `applyEvolutions.default=true` in conf/application.conf.
+
 The blogging application is backed by an in-memory database. The database is recreated whenever you enter the play console. 
 ## Configuring an IDE
 An IDE is not necessary as play will automatically build the application. If you want to set up the application for developing in an IDE, type `eclipse` or `idea` in the play console to create the project files for the respective IDEs (eclipse and intellij). 
