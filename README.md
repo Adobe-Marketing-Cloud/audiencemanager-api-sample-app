@@ -99,7 +99,7 @@ Data sources signify where a trait came from. Traits have to be associated to a 
   2. Blog Post Commenter
   3. Blog Post Tags
   
-Try doing this via logging in [AudienceManager UI](https://bank.demdex.com) first, and then also by using Postman or curl. When in the AudienceManager UI, note how the UI is making similar API calls you'll make by opening up Chrome's developer tools or Firebug in Firefox and watching XHR request traffic. 
+Try doing this via logging in [AudienceManager UI](https://bank.demdex.com) first, and then also by using Postman or curl. When in the AudienceManager UI, note how the UI is making similar API calls you'll make by opening up Chrome's developer tools or Firebug in Firefox and watching XHR request traffic (the authorization and server path is slighlty different). 
 
 When using curl or postman, you'll first need to make a request to exchange your client id, client secret, username, and password for an access token. See exercise 1. 
 
