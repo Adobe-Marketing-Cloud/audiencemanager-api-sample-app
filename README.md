@@ -8,7 +8,7 @@ If you have homebrew installed, you can install play by running `brew install pl
 
 
 ## AudienceManager Background
-Adobe AudienceManager is a Data Management Platform (DMP). It allows you to combine into audiences information on your visitors from disparate sources such as from your site, your CRM systems, and third party relationships. You are able to make these audiences actionable by sending this information to wherever you chose, whether it's your own systems for site customization or to an ad networks for ad targeting. 
+Adobe AudienceManager is a Data Management Platform (DMP). It allows you to combine into audiences information on your visitors from disparate sources such as from your site, your CRM systems, and third party relationships. You are able to make these audiences actionable by sending this information to wherever you choose, whether it's your own systems for site customization or to ad networks for ad targeting. 
 
 
 ## Getting started
@@ -141,7 +141,7 @@ When a blog post is created, we'll create a derived signal. Derived signals take
 3. The destinationKey should be `author`.
 4. The destinationValue should be the author's email address.
 
-## Exercise 6: Automatically create and update segments each for industry
+## Exercise 6: Automatically create and update segments for each industry
 Whenever a blog post is created, create a segment for the author's industry and have it contain the trait for the blog post. If the segment already exists for the industry, update the segment to add the trait. 
 
 1. The segment rule should reference the trait id (sid) from the blog post reader trait you created in Exercise 3.1. An example of segment rule would be `<traitSid>T`, where "T" denotes trait.
